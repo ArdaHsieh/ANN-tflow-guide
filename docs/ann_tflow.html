@@ -1,0 +1,219 @@
+
+
+<!doctype html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>ann_tflow module &#8212; ANN-tflow 1.0 documentation</title>
+    <link rel="stylesheet" href="_static/bizstyle.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/bizstyle.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">ANN-tflow 1.0 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/ann_tflow.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-ann_tflow">
+<span id="ann-tflow-module"></span><h1>ann_tflow module<a class="headerlink" href="#module-ann_tflow" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="ann_tflow.NeuralNetwork">
+<em class="property">class </em><code class="sig-prename descclassname">ann_tflow.</code><code class="sig-name descname">NeuralNetwork</code><span class="sig-paren">(</span><em class="sig-param">images=None</em>, <em class="sig-param">parameters=None</em>, <em class="sig-param">sampling=None</em>, <em class="sig-param">hiddenlayers=(5</em>, <em class="sig-param">5)</em>, <em class="sig-param">maxTrainingEpochs=1000000</em>, <em class="sig-param">opt_num_correction_pairs=1000</em>, <em class="sig-param">opt_parallel_iterations=8</em>, <em class="sig-param">stdscaler='normalize'</em>, <em class="sig-param">cutoff=6.5</em>, <em class="sig-param">multi_gpus=False</em>, <em class="sig-param">gpu_max_usage=4096</em>, <em class="sig-param">energy_coefficient=1.0</em>, <em class="sig-param">force_coefficient=0.04</em>, <em class="sig-param">convergenceCriteria={'energy_maxresid': None</em>, <em class="sig-param">'energy_rmse': 0.001</em>, <em class="sig-param">'force_maxresid': None</em>, <em class="sig-param">'force_rmse': None}</em><span class="sig-paren">)</span><a class="headerlink" href="#ann_tflow.NeuralNetwork" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>TensorFlow-based Neural Network model.</p>
+<p>Uses TensorFlow 2.0 to construct a neural network. This
+method also allows for GPU acceleration.</p>
+<dl class="simple">
+<dt>images: str</dt><dd><p>List of ASE atoms objects that are being trained.</p>
+</dd>
+<dt>parameters: str</dt><dd><p>File of AMP or ANN-tflow that contains parameters.</p>
+</dd>
+<dt>sampling: str or int</dt><dd><p>sampling method of data point in images</p>
+</dd>
+<dt>cutoff: float</dt><dd><p>Cutoff represent the radius above which neighbor interactions
+are ignored. Default is 6.5 Angstroms.</p>
+</dd>
+<dt>hiddenlayers: tuple or dict</dt><dd><p>Structure of the neural network. Can either be in the format
+(int,int,int), where each element represnts the size of a layer
+and there and the length of the list is the number of layers,
+or dictionary format of the network structure for each element
+type. E.g. {‘Cu’: (10, 5, 5), ‘Pt’: (10, 5)}. Default is (5, 5).</p>
+</dd>
+<dt>maxTrainingEpochs: int</dt><dd><p>Maximum number of times to loop through the training data before
+giving up. Default is 1,000,000.</p>
+</dd>
+<dt>opt_num_correction_pairs: int</dt><dd><p>Specifies the maximum number of (position_delta, gradient_delta)
+correction pairs to keep as implicit approximation of the Hessian
+matrix in tensorflow probability l-bfgs optimizer. Default is
+1,000.</p>
+</dd>
+<dt>opt_parallel_iterations: int</dt><dd><p>The number of iterations allowed tensorflow probability l-bfgs
+optimizer to run in parallel. Default is 8.</p>
+</dd>
+<dt>stdscaler: str</dt><dd><p>Normalize method of input fingerprints and fingerprint-primes.
+2 methods are allowed, ‘normalize’ and ‘zero_mean’. Default is
+‘normalize’.</p>
+</dd>
+<dt>multi_gpus: bool</dt><dd><p>Set this to True allows using multiple GPUs in training procedure.
+Default is False.</p>
+</dd>
+<dt>gpu_max_usage: int</dt><dd><p>Maximum memory (in MB) to allocate on the GPUs device. Default
+is 4,096 MB.</p>
+</dd>
+<dt>energy_coefficient<span class="classifier">float</span></dt><dd><p>Used to adjust the loss function; this is the initial weight
+applied  to the energy component. Default is 1.0.</p>
+</dd>
+<dt>force_coefficient<span class="classifier">float or None</span></dt><dd><p>Used to adjust the loss function; this is the initial weight applied
+to the force component. Default is 0.04.</p>
+</dd>
+<dt>convergenceCriteria: dict</dt><dd><p>Dictionary of convergence criteria, analogous to the main AMP
+convergence criteria dictionary. Default is
+{‘energy_rmse’: 0.001, ‘energy_maxresid’: None, ‘force_rmse’ : None,  ‘force_maxresid’ : None}
+Note: you can turn off force training by setting both ‘force_rmse’ and
+‘force_maxresid’ to None.</p>
+</dd>
+</dl>
+<dl class="method">
+<dt id="ann_tflow.NeuralNetwork.ANN_Model">
+<code class="sig-name descname">ANN_Model</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ann_tflow.NeuralNetwork.ANN_Model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a Keras machine learning model.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ann_tflow.NeuralNetwork.amp_afp_derafp">
+<code class="sig-name descname">amp_afp_derafp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ann_tflow.NeuralNetwork.amp_afp_derafp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given ASE DB , calculate Fingerprints, Fingerprintprimes,
+True Energy, and True Forces.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ann_tflow.NeuralNetwork.get_elements">
+<code class="sig-name descname">get_elements</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ann_tflow.NeuralNetwork.get_elements" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given Fingerprints, get a list of all element types
+in training sets.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ann_tflow.NeuralNetwork.get_fingerprintprimes">
+<code class="sig-name descname">get_fingerprintprimes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ann_tflow.NeuralNetwork.get_fingerprintprimes" title="Permalink to this definition">¶</a></dt>
+<dd><p>With given AMP Fingerprintprimes, restructure Fingerprintprimes
+to a new structure that can use to create the ANN input easily.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ann_tflow.NeuralNetwork.get_fingerprints">
+<code class="sig-name descname">get_fingerprints</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ann_tflow.NeuralNetwork.get_fingerprints" title="Permalink to this definition">¶</a></dt>
+<dd><p>With given AMP Fingerprints, restructure Fingerprints to a
+new structure that can use to create the ANN input easily.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ann_tflow.NeuralNetwork.get_train_data">
+<code class="sig-name descname">get_train_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ann_tflow.NeuralNetwork.get_train_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given ANN Fingerprint &amp; Fingerprintprimes, get training inputs and labels.
+Such as input_afp, input_derafp, input_scaling, E_true, F_true, imgAtomNums,
+totalImages.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ann_tflow.NeuralNetwork.opt_main_fn">
+<code class="sig-name descname">opt_main_fn</code><span class="sig-paren">(</span><em class="sig-param">model</em>, <em class="sig-param">train_ins</em><span class="sig-paren">)</span><a class="headerlink" href="#ann_tflow.NeuralNetwork.opt_main_fn" title="Permalink to this definition">¶</a></dt>
+<dd><p>A factory to create a function required by tfp.optimizer.lbfgs_minimize.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> – an instance of tf.keras.Model.</p></li>
+<li><p><strong>train_ins</strong> – the input and output part of training data.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>loss_value, gradients = f(model_parameters).</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>A function that has a signature of</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="ann_tflow.NeuralNetwork.train">
+<code class="sig-name descname">train</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ann_tflow.NeuralNetwork.train" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fit the model parameters such that the fingerprints can be used to
+describe the energies in trainingimages. log is the logging object.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">ANN-tflow 1.0 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, I-Ta Hsieh.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.2.
+    </div>
+  </body>
+</html>
